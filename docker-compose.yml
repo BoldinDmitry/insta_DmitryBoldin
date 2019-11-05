@@ -4,13 +4,13 @@ services:
   pre_run:
     build: .
     image: app
-    command: python /manage.py migrate
+    command: python manage.py migrate
     volumes:
     - .:/code
 
   web:
     build: .
-    command: python /manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
