@@ -24,7 +24,7 @@ SECRET_KEY = "-36+!f&$%t@@u@c6qu^-4^uizyzz#yk3#80*yb6mvty=l_#n-n"
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['flexhub.ru', '127.0.0.1']
 
 # Application definition
 
