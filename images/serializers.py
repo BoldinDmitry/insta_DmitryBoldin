@@ -21,16 +21,6 @@ class CreatorSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ImageSerializer(serializers.ModelSerializer):
-    creator_id = serializers.PrimaryKeyRelatedField(
-        queryset=Creator.objects.all(), default=serializers.CurrentUserDefault()
-    )
-
-    class Meta:
-        model = Image
-        fields = "__all__"
-
-
 class CommentSerializer(serializers.ModelSerializer):
     creator = serializers.PrimaryKeyRelatedField(
         queryset=Creator.objects.all(), default=serializers.CurrentUserDefault()
@@ -39,6 +29,21 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    creator_id = serializers.PrimaryKeyRelatedField(
+        queryset=Creator.objects.all(), default=serializers.CurrentUserDefault()
+    )
+
+    comments = serializers.SerializerMethodField('get_all_related_comments', read_only=True)
+
+    def get_all_related_comments(self, foo):
+        return CommentSerializer(Comment.objects.filter(image_id=foo), many=True).data
+
+    class Meta:
+        model = Image
+        fields = ('id', 'file', 'caption', 'like_count', 'creator_id', 'tags', 'comments')
 
 
 class LikeSerializer(serializers.ModelSerializer):
