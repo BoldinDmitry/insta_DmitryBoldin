@@ -24,6 +24,8 @@ import images.views as image_views
 router = routers.DefaultRouter()
 
 urlpatterns = [
+    path("admin/", admin.site.urls),
+
     # Users
     path(r"users/explore/", image_views.CreatorViewSet.as_view({"get": "list"})),
     path(
@@ -37,35 +39,35 @@ urlpatterns = [
         name="create_user",
     ),
     path(r"users/login/", image_views.auth_view),
-    re_path(r"^users/(?P<username>[-\w]+)/$", image_views.CreatorView.as_view()),
-    re_path(r"^users/follow/(?P<user_id>.+)/$", image_views.FollowView.as_view()),
-    re_path(r"^users/unfollow/(?P<user_id>.+)/$", image_views.UnFollowView.as_view()),
+    re_path(r"users/(?P<username>[-\w]+)/$", image_views.CreatorView.as_view()),
+    re_path(r"users/follow/(?P<user_id>.+)/$", image_views.FollowView.as_view()),
+    re_path(r"users/unfollow/(?P<user_id>.+)/$", image_views.UnFollowView.as_view()),
     re_path(
-        r"^users/(?P<username>[-\w]+)/followers/$", image_views.FollowersList.as_view()
+        r"users/(?P<username>[-\w]+)/followers/$", image_views.FollowersList.as_view()
     ),
     re_path(
-        r"^users/(?P<username>[-\w]+)/following/$", image_views.FollowingList.as_view()
+        r"users/(?P<username>[-\w]+)/following/$", image_views.FollowingList.as_view()
     ),
     # Comments
     re_path(
-        r"^images/(?P<image_id>.+)/comments/$",
+        r"images/(?P<image_id>.+)/comments/$",
         image_views.CommentViewSet.as_view({"post": "create"}),
     ),
     re_path(
-        r"^images/(?P<image_id>.+)/comments/(?P<comment_id>.+)$",
+        r"images/(?P<image_id>.+)/comments/(?P<comment_id>.+)$",
         image_views.CommentViewSet.as_view({"delete": "destroy"}),
     ),
     re_path(
-        r"^images/comments/(?P<comment_id>.+)$",
+        r"images/comments/(?P<comment_id>.+)$",
         image_views.CommentViewSet.as_view({"delete": "destroy"}),
     ),
     # Likes
     re_path(
-        r"^images/(?P<image_id>.+)/likes/$",
+        r"images/(?P<image_id>.+)/likes/$",
         image_views.LikeView.as_view({"post": "create", "get": "list"}),
     ),
     re_path(
-        r"^images/(?P<image_id>.+)/unlikes/$",
+        r"images/(?P<image_id>.+)/unlikes/$",
         image_views.LikeView.as_view({"delete": "destroy"}),
     ),
     # Images
@@ -85,7 +87,7 @@ urlpatterns = [
         name="search_images",
     ),
 
-    re_path(r'^auth/', include('rest_framework_social_oauth2.urls')),
+    re_path(r'auth/', include('rest_framework_social_oauth2.urls')),
 
-    path("admin/", admin.site.urls),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
